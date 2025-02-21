@@ -1,7 +1,6 @@
 from cryptography.fernet import Fernet 
-from flask import Flask, render_template_string, render_template, request, jsonify
+from flask import Flask, render_template_string, render_template, jsonify, request, json
 from flask import render_template
-from flask import json
 from urllib.request import urlopen
 import sqlite3
                                                                                                                                        
