@@ -23,7 +23,7 @@ def encryptage(valeur):
 @app.route('/decrypt/<string:token>')
 def decryptage(token):
     token_bytes = token.encode()
-    valeur_dechiffree = f.decript(token_bytes)
+    valeur_dechiffree = f.decrypt(token_bytes)
     return f"Valeur décryptée : {valeur_dechiffree.decode()}"
                                                                                                                                                      
 if __name__ == "__main__":
