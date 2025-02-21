@@ -1,3 +1,88 @@
-<!doctype html>
-<title>CryptoPython</title>
-<h1>Bienvenue dans mon atelier CryptoPython !</h1>
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <title>CryptoPython</title>
+  </head>
+  <body>
+    <h1>Bienvenue dans votre atelier CryptoPython !</h1>
+
+    <!-- Section pour la clé de chiffrement -->
+    <div>
+      <label for="userKey">Votre clé Fernet :</label>
+      <input type="text" id="userKey" placeholder="Entrez votre clé Fernet">
+    </div>
+
+    <hr>
+
+    <!-- Section pour le chiffrement -->
+    <h2>Chiffrement</h2>
+    <form id="encryptForm">
+      <label for="plaintext">Texte à chiffrer :</label>
+      <input type="text" id="plaintext" placeholder="Entrez le texte à chiffrer">
+      <br>
+      <button type="submit">Chiffrer</button>
+    </form>
+    <div id="encryptResult"></div>
+
+    <hr>
+
+    <!-- Section pour le déchiffrement -->
+    <h2>Déchiffrement</h2>
+    <form id="decryptForm">
+      <label for="token">Token à déchiffrer :</label>
+      <input type="text" id="token" placeholder="Entrez le token à déchiffrer">
+      <br>
+      <button type="submit">Déchiffrer</button>
+    </form>
+    <div id="decryptResult"></div>
+
+    <script>
+      // Envoi du texte à chiffrer
+      document.getElementById('encryptForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const key = document.getElementById('userKey').value;  // Récupère la clé
+        const plaintext = document.getElementById('plaintext').value;  // Récupère le texte à chiffrer
+
+        const payload = { key: key, valeur: plaintext };  // Prépare les données pour l'envoi
+
+        fetch('/encrypt', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)  // Envoie les données sous forme de JSON
+        })
+        .then(response => response.json())  // Récupère la réponse en JSON
+        .then(data => {
+          // Affiche le token chiffré dans la page
+          document.getElementById('encryptResult').innerText = "Token chiffré : " + data.valeur_encryptee + "\nClé utilisée : " + data.key;
+        })
+        .catch(error => {
+          document.getElementById('encryptResult').innerText = 'Erreur lors du chiffrement';
+        });
+      });
+
+      // Envoi du token à déchiffrer
+      document.getElementById('decryptForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const key = document.getElementById('userKey').value;  // Récupère la clé
+        const token = document.getElementById('token').value;  // Récupère le token à déchiffrer
+
+        const payload = { key: key, token: token };  // Prépare les données pour l'envoi
+
+        fetch('/decrypt', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)  // Envoie les données sous forme de JSON
+        })
+        .then(response => response.json())  // Récupère la réponse en JSON
+        .then(data => {
+          // Affiche le texte déchiffré dans la page
+          document.getElementById('decryptResult').innerText = "Texte déchiffré : " + data.valeur_decryptee;
+        })
+        .catch(error => {
+          document.getElementById('decryptResult').innerText = 'Erreur lors du déchiffrement';
+        });
+      });
+    </script>
+  </body>
+</html>
