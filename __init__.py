@@ -13,7 +13,7 @@ def generate_key():
 
 @app.route('/')
 def hello_world():
-    return "Bienvenue ! Utilisez les routes /encrypt et /decrypt avec des requêtes POST."
+    return render_template('hello.html')
 
 @app.route('/encrypt', methods=['POST'])
 def encryptage():
