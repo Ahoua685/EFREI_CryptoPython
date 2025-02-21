@@ -6,15 +6,14 @@ from urllib.request import urlopen
 import sqlite3
                                                                                                                                        
 app = Flask(__name__)                                                                                                                  
-                                                                                                                                       
-@app.route('/')
-def hello_world():
-    return render_template('hello.html')
 
 def generate_key():
     key = Fernet.generate_key()
     return key.decode()
 
+@app.route('/')
+def hello_world():
+    return render_template('hello.html')
 
 @app.route('/encrypt', methods=['POST'])
 def encryptage():
