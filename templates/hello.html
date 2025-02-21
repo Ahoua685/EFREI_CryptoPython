@@ -7,7 +7,7 @@
 <body>
   <h1>Bienvenue dans CryptoPython</h1>
 
-  <!-- Chiffrement -->
+  
   <h2>Chiffrement</h2>
   <form id="encryptForm">
     <label for="plaintext">Texte à chiffrer :</label>
@@ -18,18 +18,18 @@
 
   <hr>
 
-  <!-- Déchiffrement -->
+
   <h2>Déchiffrement</h2>
   <form id="decryptForm">
     <label for="token">Token à déchiffrer :</label>
     <input type="text" id="token" placeholder="Entrez le token à déchiffrer">
-    <input type="hidden" id="decryptionKey"> <!-- Clé cachée récupérée automatiquement -->
+    <input type="hidden" id="decryptionKey"> 
     <button type="submit">Déchiffrer</button>
   </form>
   <div id="decryptResult"></div>
 
   <script>
-    // Fonction de chiffrement
+    
     document.getElementById('encryptForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const plaintext = document.getElementById('plaintext').value;
@@ -41,10 +41,10 @@
       })
       .then(response => response.json())
       .then(data => {
-        // Affichage du résultat du chiffrement
+        
         document.getElementById('encryptResult').innerText = 
           "Token chiffré : " + data.valeur_encryptee + "\nClé utilisée : " + data.key;
-        // Stocker la clé automatiquement pour le déchiffrement
+        
         document.getElementById('decryptionKey').value = data.key;
       })
       .catch(() => {
@@ -52,7 +52,7 @@
       });
     });
 
-    // Fonction de déchiffrement
+    
     document.getElementById('decryptForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const token = document.getElementById('token').value;
@@ -65,7 +65,7 @@
       })
       .then(response => response.json())
       .then(data => {
-        // Corriger ici en utilisant la bonne propriété de l'objet retourné
+        
         document.getElementById('decryptResult').innerText = "Texte déchiffré : " + data.valeur_decryptee;
       })
       .catch(() => {
