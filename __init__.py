@@ -6,7 +6,6 @@ import sqlite3
                                                                                                                                        
 app = Flask(__name__)
 
-# Fonction pour générer une clé
 def generate_key():
     key = Fernet.generate_key()
     return key.decode()
@@ -15,22 +14,19 @@ def generate_key():
 def hello_world():
     return render_template('hello.html')
 
-# Route pour chiffrer une valeur
 @app.route('/encrypt', methods=['POST'])
 def encryptage():
-    data = request.get_json()  # Récupérer les données JSON envoyées
+    data = request.get_json()  
     valeur = data.get('valeur')
 
-    # Si aucune clé n'est fournie, on génère une nouvelle clé
     custom_key = data.get('key') if data.get('key') else generate_key()
 
-    f = Fernet(custom_key.encode())  # Créer l'objet Fernet avec la clé
+    f = Fernet(custom_key.encode()) 
     valeur_bytes = valeur.encode()  # Conversion du texte en bytes
     token = f.encrypt(valeur_bytes)  # Chiffrement de la valeur
 
     return jsonify({'key': custom_key, 'valeur_encryptee': token.decode()})
 
-# Route pour déchiffrer une valeur
 @app.route('/decrypt', methods=['POST'])
 def decryptage():
     data = request.get_json()  # Récupérer les données JSON envoyées
@@ -40,9 +36,9 @@ def decryptage():
     if not custom_key or not token:
         return jsonify({'message': 'Clé ou token manquants. Veuillez fournir une clé et un token valides.'})
 
-    f = Fernet(custom_key.encode())  # Créer l'objet Fernet avec la clé
-    token_bytes = token.encode()  # Conversion du token en bytes
-    valeur_dechiffree = f.decrypt(token_bytes)  # Déchiffrement du token
+    f = Fernet(custom_key.encode())  
+    token_bytes = token.encode()  
+    valeur_dechiffree = f.decrypt(token_bytes)  
 
     return jsonify({'valeur_decryptee': valeur_dechiffree.decode()})
 
